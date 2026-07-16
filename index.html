@@ -441,10 +441,10 @@
     <section class="section" id="architecture">
       <div class="shell">
         <p class="eyebrow">Architecture by use case</p>
-        <h2>Three independent paths on a governed Foundry foundation.</h2>
-        <p class="section-intro">Each option has a separate architecture and service profile. Microsoft Learn MCP supports only the workshop research experience; enterprise knowledge and operational data require approved, permission-aware connections.</p>
+        <h2>Architecture for the selected use case.</h2>
+        <p class="section-intro">Select a use case above to change this architecture. Microsoft Learn MCP supports only the workshop research experience; enterprise knowledge and operational data require approved, permission-aware connections.</p>
         <div class="architecture-grid">
-          <article class="architecture-card qshe">
+          <article class="architecture-card qshe" data-architecture="qshe">
             <header><p class="eyebrow">Use case 1 · QSHE knowledge</p><h3>Ground approved operational guidance and route controlled escalations.</h3><p>Documents are extracted and indexed, the Foundry agent returns cited guidance, and consequential updates pause for an authorized reviewer.</p></header>
             <div class="architecture-frame">
               <pre class="mermaid">
@@ -471,7 +471,7 @@ flowchart LR
             </div>
           </article>
 
-          <article class="architecture-card supply">
+          <article class="architecture-card supply" data-architecture="supply" hidden>
             <header><p class="eyebrow">Use case 2 · Supply operations</p><h3>Detect supply risk, investigate exceptions, and prepare approved actions.</h3><p>Event and time-series data flows through Fabric, the Foundry agent assembles evidence and options, and ERP or dispatch changes require human approval.</p></header>
             <div class="architecture-frame">
               <pre class="mermaid">
@@ -499,7 +499,7 @@ flowchart LR
             </div>
           </article>
 
-          <article class="architecture-card document">
+          <article class="architecture-card document" data-architecture="document" hidden>
             <header><p class="eyebrow">Use case 3 · Document assurance</p><h3>Extract, reconcile, and route commercial and delivery evidence.</h3><p>Documents are classified and extracted, indexed for comparison, reviewed by the agent, and routed to an authorized employee before any commercial progression.</p></header>
             <div class="architecture-frame">
               <pre class="mermaid">
@@ -526,12 +526,7 @@ flowchart LR
             </div>
           </article>
         </div>
-        <div class="legend" aria-label="Architecture legend">
-          <span><i class="dot shared"></i> Shared Foundry and workshop services</span>
-          <span><i class="dot qshe"></i> QSHE knowledge path</span>
-          <span><i class="dot supply"></i> Supply operations path</span>
-          <span><i class="dot document"></i> Document assurance path</span>
-        </div>
+        <div class="legend" aria-label="Architecture legend"><span><i class="dot shared"></i> Shared Foundry, identity, approval, and observability controls are retained in every option.</span></div>
       </div>
     </section>
 
@@ -654,6 +649,9 @@ flowchart LR
       document.getElementById("caseServices").textContent = selected.services;
       document.getElementById("caseSignal").textContent = selected.signal;
       document.getElementById("caseMeasures").textContent = selected.measures;
+      document.querySelectorAll(".architecture-card").forEach((card) => {
+        card.hidden = card.dataset.architecture !== name;
+      });
     }
 
     document.querySelectorAll(".case-tab").forEach((tab) => {
