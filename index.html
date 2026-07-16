@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Three Microsoft Foundry agent workshop options for governed energy operations." />
-  <title>Agentic AI Workshop Options</title>
+  <title>Use Case Options for the Energy Industry</title>
   <script>
     (() => {
       const param = new URLSearchParams(window.location.search).get("scoutTheme");
@@ -261,6 +261,21 @@
       box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
     }
     .architecture-frame .mermaid { min-width: 920px; text-align: center; }
+    .architecture-grid { display: grid; gap: 24px; }
+    .architecture-card {
+      padding: 24px;
+      border: 1px solid var(--cp-border);
+      border-top: 6px solid var(--cp-border-strong);
+      border-radius: 16px;
+      background: var(--cp-surface);
+      box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+    }
+    .architecture-card.qshe { border-top-color: var(--cp-success); }
+    .architecture-card.supply { border-top-color: var(--cp-warning); }
+    .architecture-card.document { border-top-color: var(--cp-accent); }
+    .architecture-card header { max-width: 780px; margin-bottom: 20px; }
+    .architecture-card header p { margin: 0; color: var(--cp-text-muted); }
+    .architecture-card .architecture-frame { box-shadow: none; background: var(--cp-bg-elevated); }
     .legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 20px 0 0; }
     .legend span { display: inline-flex; gap: 8px; align-items: center; color: var(--cp-text-muted); font-size: 0.84rem; }
     .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--cp-border-strong); }
@@ -320,7 +335,11 @@
       white-space: nowrap;
     }
     .button-link:hover { background: var(--cp-accent-hover); color: var(--cp-accent-fg); }
-    footer { padding: 36px 0 56px; color: var(--cp-text-muted); font-size: 0.85rem; }
+    footer { padding: 44px 0 56px; color: var(--cp-text-muted); font-size: 0.85rem; border-top: 1px solid var(--cp-border); }
+    .footer-grid { display: grid; grid-template-columns: 0.35fr 1.65fr; gap: 32px; align-items: start; }
+    .footer-title { color: var(--cp-text); font-weight: 750; }
+    .footer-disclaimer { margin: 0; line-height: 1.65; }
+    .footer-disclaimer strong { color: var(--cp-text); }
     .disclaimer {
       margin-top: 32px;
       padding: 18px;
@@ -335,6 +354,7 @@
       .hero, .switchboard { grid-template-columns: 1fr; }
       .hero { padding-top: 64px; gap: 32px; }
       .story-grid, .service-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
       .nav a { display: none; }
     }
     @media (max-width: 640px) {
@@ -354,7 +374,7 @@
 <body>
   <header class="topbar">
     <div class="shell topbar-inner">
-      <a class="brand" href="#top">Agentic AI Workshop Options</a>
+      <a class="brand" href="#top">Energy Industry Use Cases</a>
       <nav class="nav" aria-label="Primary navigation">
         <a href="#options">Use cases</a>
         <a href="#architecture">Architecture</a>
@@ -369,8 +389,8 @@
     <section class="shell hero">
       <div>
         <p class="eyebrow">Microsoft Foundry · Azure · MCP</p>
-        <h1>Three routes from operational signals to governed action.</h1>
-        <p class="hero-copy">A one-day workshop to build a Microsoft Foundry agent, connect it to Microsoft Learn MCP, and select one practical agent use case for a controlled pilot.</p>
+        <h1>Use Case Options for the Energy Industry</h1>
+        <p class="hero-copy">Three governed agent patterns for operational knowledge, supply exceptions, and document assurance—designed as options for a one-day Microsoft Foundry workshop.</p>
       </div>
       <aside class="hero-note">
         <strong>What this page is</strong>
@@ -420,51 +440,91 @@
 
     <section class="section" id="architecture">
       <div class="shell">
-        <p class="eyebrow">Color-coded architecture</p>
-        <h2>One governed foundation. Three specialized paths.</h2>
-        <p class="section-intro">Microsoft Learn MCP supports the workshop research experience. Enterprise knowledge and operational data require separate permission-aware connections during a future pilot.</p>
-        <div class="architecture-frame">
-          <pre class="mermaid" id="architectureDiagram">
-flowchart TB
-  USER[Workshop participant or authorized operator] --> PORTAL[Microsoft Foundry portal or application]
-  PORTAL --> AGENT[Microsoft Foundry Agent Service]
-  AGENT --> MCP[Microsoft Learn MCP Server]
-  MCP --> LEARN[(Official Microsoft Learn content)]
-
-  AGENT --> QSEARCH[Foundry IQ or Azure AI Search]
-  QSEARCH --> QDOC[(Approved SOPs, safety data and procedures)]
-  QDOC --> QDI[Azure AI Document Intelligence]
-
-  AGENT --> FABRIC[Microsoft Fabric Real-Time Intelligence]
-  FABRIC --> EVENT[Eventstream and Eventhouse]
-  EVENT --> TELEMETRY[(Tank, consumption and delivery events)]
-  EVENT --> ACTIVATOR[Fabric Activator]
-
-  AGENT --> DSEARCH[Azure AI Search]
-  DSEARCH --> BLOB[(Azure Blob Storage)]
-  BLOB --> DDI[Azure AI Document Intelligence]
-
+        <p class="eyebrow">Architecture by use case</p>
+        <h2>Three independent paths on a governed Foundry foundation.</h2>
+        <p class="section-intro">Each option has a separate architecture and service profile. Microsoft Learn MCP supports only the workshop research experience; enterprise knowledge and operational data require approved, permission-aware connections.</p>
+        <div class="architecture-grid">
+          <article class="architecture-card qshe">
+            <header><p class="eyebrow">Use case 1 · QSHE knowledge</p><h3>Ground approved operational guidance and route controlled escalations.</h3><p>Documents are extracted and indexed, the Foundry agent returns cited guidance, and consequential updates pause for an authorized reviewer.</p></header>
+            <div class="architecture-frame">
+              <pre class="mermaid">
+flowchart LR
+  USER[Site user or QSHE reviewer] --> APP[Foundry portal or governed application]
+  APP --> AGENT[Microsoft Foundry Agent Service]
+  BLOB[(Azure Blob Storage)] --> DI[Azure AI Document Intelligence]
+  DI --> SEARCH[Foundry IQ or Azure AI Search]
+  SEARCH --> AGENT
   AGENT --> FLOW[Azure Logic Apps or Azure Functions]
-  FLOW --> APPROVAL{Authorized human approval}
-  APPROVAL --> SYSTEMS[ERP and operational APIs]
-
-  ID[Microsoft Entra ID and Azure RBAC] -. identity and least privilege .-> AGENT
-  ID -. authorization .-> SYSTEMS
+  FLOW --> APPROVAL{QSHE human approval}
+  APPROVAL --> RECORD[(Approved case or action record)]
+  AGENT -. workshop research .-> MCP[Microsoft Learn MCP Server]
+  ID[Microsoft Entra ID and Azure RBAC] -. identity .-> AGENT
   AGENT -. traces .-> OBS[Foundry tracing and Application Insights]
-  FLOW -. workflow events .-> OBS
 
   classDef shared fill:__SURFACE_SOFT__,stroke:__LINK__,color:__TEXT__,stroke-width:2px
-  classDef qshe fill:__SURFACE__,stroke:__SUCCESS__,color:__TEXT__,stroke-width:3px
-  classDef supply fill:__SURFACE__,stroke:__WARNING__,color:__TEXT__,stroke-width:3px
-  classDef document fill:__SURFACE__,stroke:__ACCENT__,color:__TEXT__,stroke-width:3px
+  classDef usecase fill:__SURFACE__,stroke:__SUCCESS__,color:__TEXT__,stroke-width:3px
   classDef control fill:__SURFACE_SOFT__,stroke:__DANGER__,color:__TEXT__,stroke-width:2px
+  class USER,APP,AGENT,MCP shared
+  class BLOB,DI,SEARCH usecase
+  class FLOW,APPROVAL,RECORD,ID,OBS control
+              </pre>
+            </div>
+          </article>
 
-  class USER,PORTAL,AGENT,MCP,LEARN shared
-  class QSEARCH,QDOC,QDI qshe
-  class FABRIC,EVENT,TELEMETRY,ACTIVATOR supply
-  class DSEARCH,BLOB,DDI document
-  class FLOW,APPROVAL,SYSTEMS,ID,OBS control
-          </pre>
+          <article class="architecture-card supply">
+            <header><p class="eyebrow">Use case 2 · Supply operations</p><h3>Detect supply risk, investigate exceptions, and prepare approved actions.</h3><p>Event and time-series data flows through Fabric, the Foundry agent assembles evidence and options, and ERP or dispatch changes require human approval.</p></header>
+            <div class="architecture-frame">
+              <pre class="mermaid">
+flowchart LR
+  SOURCES[(Tank, consumption, delivery and ERP events)] --> STREAM[Fabric Eventstream]
+  STREAM --> HOUSE[Fabric Eventhouse]
+  HOUSE --> ACTIVATOR[Fabric Activator]
+  ACTIVATOR --> AGENT[Microsoft Foundry Agent Service]
+  SEARCH[Azure AI Search for procedures and commitments] --> AGENT
+  AGENT --> FLOW[Azure Logic Apps or Azure Functions]
+  FLOW --> APPROVAL{Supply coordinator approval}
+  APPROVAL --> ERP[ERP and operational APIs]
+  USER[Supply coordinator] --> APP[Foundry portal or governed application] --> AGENT
+  AGENT -. workshop research .-> MCP[Microsoft Learn MCP Server]
+  ID[Microsoft Entra ID and Azure RBAC] -. identity and authorization .-> AGENT
+  AGENT -. traces .-> OBS[Foundry tracing and Application Insights]
+
+  classDef shared fill:__SURFACE_SOFT__,stroke:__LINK__,color:__TEXT__,stroke-width:2px
+  classDef usecase fill:__SURFACE__,stroke:__WARNING__,color:__TEXT__,stroke-width:3px
+  classDef control fill:__SURFACE_SOFT__,stroke:__DANGER__,color:__TEXT__,stroke-width:2px
+  class USER,APP,AGENT,MCP shared
+  class SOURCES,STREAM,HOUSE,ACTIVATOR,SEARCH usecase
+  class FLOW,APPROVAL,ERP,ID,OBS control
+              </pre>
+            </div>
+          </article>
+
+          <article class="architecture-card document">
+            <header><p class="eyebrow">Use case 3 · Document assurance</p><h3>Extract, reconcile, and route commercial and delivery evidence.</h3><p>Documents are classified and extracted, indexed for comparison, reviewed by the agent, and routed to an authorized employee before any commercial progression.</p></header>
+            <div class="architecture-frame">
+              <pre class="mermaid">
+flowchart LR
+  UPLOAD[Authorized document upload] --> BLOB[(Azure Blob Storage)]
+  BLOB --> DI[Azure AI Document Intelligence]
+  DI --> SEARCH[Foundry IQ or Azure AI Search]
+  SEARCH --> AGENT[Microsoft Foundry Agent Service]
+  USER[Commercial, Finance, Supply Chain or QSHE reviewer] --> APP[Foundry portal or governed application] --> AGENT
+  AGENT --> FLOW[Azure Logic Apps or Azure Functions]
+  FLOW --> APPROVAL{Authorized document review}
+  APPROVAL --> SYSTEM[ERP or controlled document record]
+  AGENT -. workshop research .-> MCP[Microsoft Learn MCP Server]
+  ID[Microsoft Entra ID and Azure RBAC] -. identity and authorization .-> AGENT
+  AGENT -. traces .-> OBS[Foundry tracing and Application Insights]
+
+  classDef shared fill:__SURFACE_SOFT__,stroke:__LINK__,color:__TEXT__,stroke-width:2px
+  classDef usecase fill:__SURFACE__,stroke:__ACCENT__,color:__TEXT__,stroke-width:3px
+  classDef control fill:__SURFACE_SOFT__,stroke:__DANGER__,color:__TEXT__,stroke-width:2px
+  class USER,APP,AGENT,MCP shared
+  class UPLOAD,BLOB,DI,SEARCH usecase
+  class FLOW,APPROVAL,SYSTEM,ID,OBS control
+              </pre>
+            </div>
+          </article>
         </div>
         <div class="legend" aria-label="Architecture legend">
           <span><i class="dot shared"></i> Shared Foundry and workshop services</span>
@@ -540,7 +600,10 @@ flowchart TB
   </main>
 
   <footer>
-    <div class="shell">Agentic AI Workshop Options · Microsoft Foundry and Azure · Public workshop concept</div>
+    <div class="shell footer-grid">
+      <div class="footer-title">Use Case Options for the Energy Industry</div>
+      <p class="footer-disclaimer"><strong>Independent demonstration and non-affiliation disclaimer.</strong> This website is an independently created educational demonstration for workshop planning. It is not produced, sponsored, endorsed, approved by, or affiliated with Microsoft Corporation or its affiliates. Microsoft, Azure, Microsoft Foundry, Microsoft Learn, and related product names may be trademarks of the Microsoft group of companies. References to Microsoft products are based on publicly available documentation and do not constitute a Microsoft recommendation, warranty, commitment, or representation of production readiness. This demonstration is not legal, compliance, security, licensing, pricing, or implementation advice. Organizations must independently validate requirements, service availability, preview status, licensing, costs, architecture, security, privacy, data residency, and operational controls before implementation.</p>
+    </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
@@ -606,7 +669,6 @@ flowchart TB
     });
 
     const themeStyles = getComputedStyle(document.documentElement);
-    const architectureDiagram = document.getElementById("architectureDiagram");
     const diagramColors = {
       "__SURFACE_SOFT__": themeStyles.getPropertyValue("--cp-surface-soft").trim(),
       "__SURFACE__": themeStyles.getPropertyValue("--cp-surface").trim(),
@@ -617,10 +679,12 @@ flowchart TB
       "__ACCENT__": themeStyles.getPropertyValue("--cp-accent").trim(),
       "__DANGER__": themeStyles.getPropertyValue("--cp-danger").trim()
     };
-    architectureDiagram.textContent = Object.entries(diagramColors).reduce(
-      (source, [token, value]) => source.replaceAll(token, value),
-      architectureDiagram.textContent
-    );
+    document.querySelectorAll(".mermaid").forEach((diagram) => {
+      diagram.textContent = Object.entries(diagramColors).reduce(
+        (source, [token, value]) => source.replaceAll(token, value),
+        diagram.textContent
+      );
+    });
 
     mermaid.initialize({
       startOnLoad: false,
