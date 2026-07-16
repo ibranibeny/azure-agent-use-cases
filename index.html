@@ -281,12 +281,46 @@
     .architecture-frame {
       overflow-x: auto;
       padding: 24px;
+      min-height: 360px;
       border: 1px solid var(--cp-border);
       border-radius: 16px;
       background: var(--cp-surface);
       box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
     }
     .architecture-frame .mermaid { min-width: 920px; text-align: center; }
+    .architecture-frame .mermaid svg {
+      display: block;
+      max-width: none !important;
+      height: auto;
+      margin: 0 auto;
+    }
+    .diagram-tools {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+    }
+    .diagram-button {
+      min-width: 40px;
+      padding: 8px 11px;
+      border: 1px solid var(--cp-border);
+      border-radius: 0.625rem;
+      background: var(--cp-surface-soft);
+      color: var(--cp-text);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .diagram-button:hover { border-color: var(--cp-border-strong); background: var(--cp-accent-soft); }
+    .diagram-zoom { min-width: 62px; text-align: center; color: var(--cp-text-muted); font-family: Consolas, "Courier New", Courier, monospace; font-size: 0.78rem; }
+    .architecture-card:fullscreen {
+      overflow: auto;
+      padding: 32px;
+      background: var(--cp-bg);
+    }
+    .architecture-card:fullscreen .architecture-frame { min-height: calc(100vh - 190px); background: var(--cp-surface); }
     .architecture-grid { display: grid; gap: 24px; }
     .architecture-grid:not(.ready) { min-height: 420px; }
     .architecture-grid:not(.ready) .architecture-card { visibility: hidden; }
@@ -739,6 +773,55 @@ flowchart LR
       );
     });
 
+    function initializeDiagramControls() {
+      document.querySelectorAll(".architecture-card").forEach((card) => {
+        const frame = card.querySelector(".architecture-frame");
+        const svg = frame.querySelector("svg");
+        if (!svg || card.querySelector(".diagram-tools")) return;
+
+        const viewBox = svg.viewBox.baseVal;
+        const baseWidth = Math.min(Math.max(viewBox.width * 0.78, 1280), 1760);
+        let zoom = 1;
+
+        const toolbar = document.createElement("div");
+        toolbar.className = "diagram-tools";
+        toolbar.setAttribute("aria-label", "Architecture diagram controls");
+        toolbar.innerHTML = `
+          <button class="diagram-button" type="button" data-action="out" aria-label="Zoom out">−</button>
+          <span class="diagram-zoom" aria-live="polite">100%</span>
+          <button class="diagram-button" type="button" data-action="in" aria-label="Zoom in">+</button>
+          <button class="diagram-button" type="button" data-action="reset">Reset</button>
+          <button class="diagram-button" type="button" data-action="fullscreen">Full screen</button>`;
+        frame.before(toolbar);
+
+        const zoomLabel = toolbar.querySelector(".diagram-zoom");
+        const renderZoom = () => {
+          svg.style.width = `${Math.round(baseWidth * zoom)}px`;
+          svg.style.maxWidth = "none";
+          zoomLabel.textContent = `${Math.round(zoom * 100)}%`;
+        };
+
+        toolbar.addEventListener("click", async (event) => {
+          const button = event.target.closest("button[data-action]");
+          if (!button) return;
+          const action = button.dataset.action;
+          if (action === "in") zoom = Math.min(zoom + 0.2, 2);
+          if (action === "out") zoom = Math.max(zoom - 0.2, 0.6);
+          if (action === "reset") {
+            zoom = 1;
+            frame.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+          }
+          if (action === "fullscreen") {
+            if (document.fullscreenElement) await document.exitFullscreen();
+            else if (card.requestFullscreen) await card.requestFullscreen();
+          }
+          renderZoom();
+        });
+
+        renderZoom();
+      });
+    }
+
     mermaid.initialize({
       startOnLoad: false,
       theme: "base",
@@ -755,6 +838,7 @@ flowchart LR
       }
     });
     mermaid.run({ querySelector: ".mermaid" }).then(() => {
+      initializeDiagramControls();
       document.getElementById("architectureGrid").classList.add("ready");
       document.querySelectorAll(".case-tab").forEach((tab) => { tab.disabled = false; });
       selectCase("qshe");
