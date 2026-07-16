@@ -189,6 +189,21 @@
       font-weight: 700;
     }
     .story-step p { margin: 0; color: var(--cp-text-muted); }
+    .concept-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .concept-chip {
+      padding: 14px;
+      border: 1px solid var(--cp-border);
+      border-top: 4px solid var(--cp-link);
+      border-radius: 0.625rem;
+      background: var(--cp-surface-soft);
+    }
+    .concept-chip strong { display: block; margin-bottom: 4px; font-size: 0.84rem; }
+    .concept-chip small { color: var(--cp-text-muted); }
     .switchboard {
       display: grid;
       grid-template-columns: 0.72fr 1.28fr;
@@ -253,6 +268,16 @@
     }
     .fact dt { font-size: 0.8rem; font-weight: 750; color: var(--cp-text-muted); }
     .fact dd { margin: 5px 0 0; font-size: 0.95rem; }
+    .agentic-callout {
+      margin-top: 22px;
+      padding: 18px;
+      border: 1px solid var(--cp-link);
+      border-left: 6px solid var(--cp-link);
+      border-radius: 0.625rem;
+      background: var(--cp-surface);
+    }
+    .agentic-callout strong { color: var(--cp-text); }
+    .agentic-callout p { margin: 6px 0 0; color: var(--cp-text-muted); }
     .architecture-frame {
       overflow-x: auto;
       padding: 24px;
@@ -286,6 +311,7 @@
     .dot.supply { background: var(--cp-warning); }
     .dot.document { background: var(--cp-accent); }
     .dot.shared { background: var(--cp-link); }
+    .dot.agentic { background: var(--cp-link); box-shadow: 0 0 0 4px var(--cp-highlight); }
     .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
     .service-card { padding: 22px; }
     .service-card p { margin: 0; color: var(--cp-text-muted); font-size: 0.92rem; }
@@ -357,12 +383,13 @@
       .hero, .switchboard { grid-template-columns: 1fr; }
       .hero { padding-top: 64px; gap: 32px; }
       .story-grid, .service-grid { grid-template-columns: 1fr 1fr; }
+      .concept-strip { grid-template-columns: repeat(2, 1fr); }
       .footer-grid { grid-template-columns: 1fr; }
       .nav a { display: none; }
     }
     @media (max-width: 640px) {
       .shell { width: min(100% - 20px, 1180px); }
-      .story-grid, .service-grid, .agenda, .case-facts { grid-template-columns: 1fr; }
+      .story-grid, .service-grid, .agenda, .case-facts, .concept-strip { grid-template-columns: 1fr; }
       .decision { grid-template-columns: 1fr; }
       .section { padding: 56px 0; }
       .agenda-item { grid-template-columns: 74px 1fr; }
@@ -411,6 +438,13 @@
           <article class="story-step"><span>02 · Build</span><h3>Prove the pattern</h3><p>Create a Foundry agent and connect Microsoft Learn MCP to demonstrate tool selection, approval, citations, and traceability.</p></article>
           <article class="story-step"><span>03 · Decide</span><h3>Choose a pilot</h3><p>Compare three use cases and leave with a bounded 60–90 day discovery and validation plan.</p></article>
         </div>
+        <div class="concept-strip" aria-label="Agentic AI concepts practiced in the workshop">
+          <div class="concept-chip"><strong>Reason and plan</strong><small>Interpret the goal, decompose the task, and identify missing context.</small></div>
+          <div class="concept-chip"><strong>Ground in evidence</strong><small>Retrieve approved knowledge or operational context before answering.</small></div>
+          <div class="concept-chip"><strong>Select tools</strong><small>Choose MCP, search, document, event, or workflow tools when needed.</small></div>
+          <div class="concept-chip"><strong>Pause for people</strong><small>Request human approval before consequential actions.</small></div>
+          <div class="concept-chip"><strong>Trace and evaluate</strong><small>Record model and tool behavior, test quality, and learn from failures.</small></div>
+        </div>
       </div>
     </section>
 
@@ -436,6 +470,10 @@
               <div class="fact"><dt>Pilot signal</dt><dd id="caseSignal">Strong first-pilot candidate when approved documents and owners are available.</dd></div>
               <div class="fact"><dt>Measures</dt><dd id="caseMeasures">Search time, citation validity, current-document rate, escalation quality.</dd></div>
             </dl>
+            <div class="agentic-callout">
+              <strong>Where Agentic AI happens</strong>
+              <p id="caseAgentic">Foundry interprets the question, retrieves the applicable procedure, checks evidence and conflicts, prepares a cited response, and selects an escalation workflow when human review is required.</p>
+            </div>
           </article>
         </div>
       </div>
@@ -453,7 +491,7 @@
               <pre class="mermaid">
 flowchart LR
   USER[Site user or QSHE reviewer] --> APP[Foundry portal or governed application]
-  APP --> AGENT[Microsoft Foundry Agent Service]
+  APP --> AGENT[AGENTIC AI CORE<br/>Microsoft Foundry Agent Service]
   BLOB[(Azure Blob Storage)] --> DI[Azure AI Document Intelligence]
   DI --> SEARCH[Foundry IQ or Azure AI Search]
   SEARCH --> AGENT
@@ -465,9 +503,11 @@ flowchart LR
   AGENT -. traces .-> OBS[Foundry tracing and Application Insights]
 
   classDef shared fill:__SURFACE_SOFT__,stroke:__LINK__,color:__TEXT__,stroke-width:2px
+  classDef agent fill:__SURFACE__,stroke:__LINK__,color:__TEXT__,stroke-width:5px
   classDef usecase fill:__SURFACE__,stroke:__SUCCESS__,color:__TEXT__,stroke-width:3px
   classDef control fill:__SURFACE_SOFT__,stroke:__DANGER__,color:__TEXT__,stroke-width:2px
-  class USER,APP,AGENT,MCP shared
+  class USER,APP,MCP shared
+  class AGENT agent
   class BLOB,DI,SEARCH usecase
   class FLOW,APPROVAL,RECORD,ID,OBS control
               </pre>
@@ -475,14 +515,16 @@ flowchart LR
           </article>
 
           <article class="architecture-card supply" data-architecture="supply">
-            <header><p class="eyebrow">Use case 2 · Supply operations</p><h3>Detect supply risk, investigate exceptions, and prepare approved actions.</h3><p>Event and time-series data flows through Fabric, the Foundry agent assembles evidence and options, and ERP or dispatch changes require human approval.</p></header>
+            <header><p class="eyebrow">Use case 2 · Supply operations</p><h3>Detect supply risk, investigate exceptions, and prepare approved actions.</h3><p>Tank gauges, flow meters, and delivery telemetry connect through Azure IoT Hub into Fabric. The Foundry agent assembles evidence and options, while ERP or dispatch changes require human approval.</p></header>
             <div class="architecture-frame">
               <pre class="mermaid">
 flowchart LR
-  SOURCES[(Tank, consumption, delivery and ERP events)] --> STREAM[Fabric Eventstream]
+  DEVICES[Tank gauges, flow meters<br/>and delivery IoT devices] --> IOTHUB[Azure IoT Hub]
+  IOTHUB --> STREAM[Fabric Eventstream]
+  ERPINPUT[(Delivery and ERP events)] --> STREAM
   STREAM --> HOUSE[Fabric Eventhouse]
   HOUSE --> ACTIVATOR[Fabric Activator]
-  ACTIVATOR --> AGENT[Microsoft Foundry Agent Service]
+  ACTIVATOR --> AGENT[AGENTIC AI CORE<br/>Microsoft Foundry Agent Service]
   SEARCH[Azure AI Search for procedures and commitments] --> AGENT
   AGENT --> FLOW[Azure Logic Apps or Azure Functions]
   FLOW --> APPROVAL{Supply coordinator approval}
@@ -493,10 +535,12 @@ flowchart LR
   AGENT -. traces .-> OBS[Foundry tracing and Application Insights]
 
   classDef shared fill:__SURFACE_SOFT__,stroke:__LINK__,color:__TEXT__,stroke-width:2px
+  classDef agent fill:__SURFACE__,stroke:__LINK__,color:__TEXT__,stroke-width:5px
   classDef usecase fill:__SURFACE__,stroke:__WARNING__,color:__TEXT__,stroke-width:3px
   classDef control fill:__SURFACE_SOFT__,stroke:__DANGER__,color:__TEXT__,stroke-width:2px
-  class USER,APP,AGENT,MCP shared
-  class SOURCES,STREAM,HOUSE,ACTIVATOR,SEARCH usecase
+  class USER,APP,MCP shared
+  class AGENT agent
+  class DEVICES,IOTHUB,ERPINPUT,STREAM,HOUSE,ACTIVATOR,SEARCH usecase
   class FLOW,APPROVAL,ERP,ID,OBS control
               </pre>
             </div>
@@ -510,7 +554,7 @@ flowchart LR
   UPLOAD[Authorized document upload] --> BLOB[(Azure Blob Storage)]
   BLOB --> DI[Azure AI Document Intelligence]
   DI --> SEARCH[Foundry IQ or Azure AI Search]
-  SEARCH --> AGENT[Microsoft Foundry Agent Service]
+  SEARCH --> AGENT[AGENTIC AI CORE<br/>Microsoft Foundry Agent Service]
   USER[Commercial, Finance, Supply Chain or QSHE reviewer] --> APP[Foundry portal or governed application] --> AGENT
   AGENT --> FLOW[Azure Logic Apps or Azure Functions]
   FLOW --> APPROVAL{Authorized document review}
@@ -520,16 +564,18 @@ flowchart LR
   AGENT -. traces .-> OBS[Foundry tracing and Application Insights]
 
   classDef shared fill:__SURFACE_SOFT__,stroke:__LINK__,color:__TEXT__,stroke-width:2px
+  classDef agent fill:__SURFACE__,stroke:__LINK__,color:__TEXT__,stroke-width:5px
   classDef usecase fill:__SURFACE__,stroke:__ACCENT__,color:__TEXT__,stroke-width:3px
   classDef control fill:__SURFACE_SOFT__,stroke:__DANGER__,color:__TEXT__,stroke-width:2px
-  class USER,APP,AGENT,MCP shared
+  class USER,APP,MCP shared
+  class AGENT agent
   class UPLOAD,BLOB,DI,SEARCH usecase
   class FLOW,APPROVAL,SYSTEM,ID,OBS control
               </pre>
             </div>
           </article>
         </div>
-        <div class="legend" aria-label="Architecture legend"><span><i class="dot shared"></i> Shared Foundry, identity, approval, and observability controls are retained in every option.</span></div>
+        <div class="legend" aria-label="Architecture legend"><span><i class="dot agentic"></i> The blue, heavy-border <strong>Agentic AI Core</strong> is Microsoft Foundry Agent Service. It reasons over context, selects tools, and prepares recommendations; surrounding services provide data, deterministic workflows, human approval, identity, and observability.</span></div>
       </div>
     </section>
 
@@ -543,6 +589,7 @@ flowchart LR
           <article class="service-card"><h3>Microsoft Learn MCP Server</h3><p>Public Microsoft documentation search, full article retrieval, and code samples for the workshop research agent.</p><a href="https://learn.microsoft.com/training/support/mcp" target="_blank" rel="noreferrer">Official documentation</a></article>
           <article class="service-card"><h3>Foundry IQ and Azure AI Search</h3><p>Permission-aware enterprise knowledge, citations, hybrid retrieval, and complex query grounding.</p><a href="https://learn.microsoft.com/azure/search/agentic-retrieval-overview" target="_blank" rel="noreferrer">Official documentation</a></article>
           <article class="service-card"><h3>Azure AI Document Intelligence</h3><p>Classifies and extracts fields, tables, and structure from operational and commercial documents.</p><a href="https://learn.microsoft.com/azure/ai-services/document-intelligence/overview" target="_blank" rel="noreferrer">Official documentation</a></article>
+          <article class="service-card"><h3>Azure IoT Hub</h3><p>Securely connects tank gauges, flow meters, and delivery devices for the Supply Operations option. IoT is not required for the defined QSHE Knowledge or Document Assurance scope.</p><a href="https://learn.microsoft.com/azure/iot-hub/iot-concepts-and-iot-hub" target="_blank" rel="noreferrer">Official documentation</a></article>
           <article class="service-card"><h3>Microsoft Fabric Real-Time Intelligence</h3><p>Ingests, analyzes, and acts on event and time-series data for supply exceptions.</p><a href="https://learn.microsoft.com/fabric/real-time-intelligence/overview" target="_blank" rel="noreferrer">Official documentation</a></article>
           <article class="service-card"><h3>Azure Logic Apps and Functions</h3><p>Runs deterministic validations, integrations, approvals, and controlled operational actions.</p><a href="https://learn.microsoft.com/azure/logic-apps/logic-apps-overview" target="_blank" rel="noreferrer">Official documentation</a></article>
           <article class="service-card"><h3>Microsoft Entra ID and Azure RBAC</h3><p>Provides named identity, least-privilege authorization, and scoped access to data and tools.</p><a href="https://learn.microsoft.com/azure/role-based-access-control/overview" target="_blank" rel="noreferrer">Official documentation</a></article>
@@ -557,6 +604,7 @@ flowchart LR
               <tr><td>Microsoft Learn MCP with approval and citations</td><td class="yes">Included</td><td>Optional research tool</td></tr>
               <tr><td>Enterprise documents and Azure AI Search</td><td>Synthetic design only</td><td class="later">Requires data approval</td></tr>
               <tr><td>Document Intelligence extraction</td><td>Architecture exercise</td><td class="later">Requires sample documents</td></tr>
+              <tr><td>IoT devices and Azure IoT Hub</td><td>Supply architecture exercise</td><td class="later">Requires device and telemetry assessment</td></tr>
               <tr><td>Fabric event and time-series integration</td><td>Architecture exercise</td><td class="later">Requires operational data</td></tr>
               <tr><td>ERP or operational API connection</td><td>Not connected</td><td class="later">Requires integration approval</td></tr>
               <tr><td>Human approval and production action</td><td>Pattern demonstration</td><td class="later">Requires control design</td></tr>
@@ -615,7 +663,8 @@ flowchart LR
         boundary: "No permit approval, safe/unsafe declaration, or incident closure.",
         services: "Foundry Agent Service, Foundry IQ or Azure AI Search, Document Intelligence, Logic Apps, Entra ID, Application Insights.",
         signal: "Strong first-pilot candidate when approved documents and owners are available.",
-        measures: "Search time, citation validity, current-document rate, escalation quality."
+        measures: "Search time, citation validity, current-document rate, escalation quality.",
+        agentic: "Foundry interprets the question, retrieves the applicable procedure, checks evidence and conflicts, prepares a cited response, and selects an escalation workflow when human review is required. IoT devices are not required for this document-grounded scope."
       },
       supply: {
         kicker: "Use case 2 · Operations",
@@ -623,9 +672,10 @@ flowchart LR
         problem: "Distributed sites, changing consumption, delivery dependencies, and safety stock create an exception-investigation workload.",
         role: "Detect supply risk, assemble evidence, investigate causes, and prepare replenishment or communication options.",
         boundary: "No purchase, dispatch, stock adjustment, or supply guarantee without authorized approval.",
-        services: "Foundry Agent Service, Fabric Real-Time Intelligence, Eventstream, Eventhouse, Activator, Logic Apps or Functions, operational APIs.",
+        services: "Foundry Agent Service, Azure IoT Hub, Fabric Real-Time Intelligence, Eventstream, Eventhouse, Activator, Logic Apps or Functions, operational APIs.",
         signal: "Highest strategic value; requires stronger data readiness and integration discovery.",
-        measures: "Warning lead time, emergency deliveries, investigation time, recommendation acceptance."
+        measures: "Warning lead time, emergency deliveries, investigation time, recommendation acceptance.",
+        agentic: "Foundry receives an exception triggered from IoT and Fabric signals, gathers tank, consumption, delivery, procedure, and commitment context, reasons about likely causes, selects search and workflow tools, and prepares ranked response options for coordinator approval."
       },
       document: {
         kicker: "Use case 3 · Assurance",
@@ -635,7 +685,8 @@ flowchart LR
         boundary: "No supplier approval, delivery acceptance, contract change, invoice authorization, or payment release.",
         services: "Foundry Agent Service, Document Intelligence, Azure AI Search, Blob Storage, Logic Apps or Functions, Entra ID, Application Insights.",
         signal: "Practical first-pilot candidate for a bounded set of sanitized document types.",
-        measures: "Review time, extraction accuracy, discrepancy detection, false positives, manual rework."
+        measures: "Review time, extraction accuracy, discrepancy detection, false positives, manual rework.",
+        agentic: "Foundry determines which documents and fields must be compared, calls retrieval and extraction tools, reasons over mismatches and missing evidence, drafts a discrepancy package, and selects the appropriate human review route. IoT devices are not required for this document-assurance scope."
       }
     };
 
@@ -652,6 +703,7 @@ flowchart LR
       document.getElementById("caseServices").textContent = selected.services;
       document.getElementById("caseSignal").textContent = selected.signal;
       document.getElementById("caseMeasures").textContent = selected.measures;
+      document.getElementById("caseAgentic").textContent = selected.agentic;
       document.querySelectorAll(".architecture-card").forEach((card) => {
         card.hidden = card.dataset.architecture !== name;
       });
