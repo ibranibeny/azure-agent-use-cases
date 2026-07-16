@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Three Microsoft Foundry agent workshop options for governed energy operations." />
+  <title>Agentic AI Workshop Options</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--cp-bg);
+      color: var(--cp-text);
+      font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.55;
+    }
+    a { color: var(--cp-link); }
+    a:hover { color: var(--cp-accent); }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid var(--cp-accent);
+      outline-offset: 3px;
+    }
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--cp-border);
+      background: var(--cp-overlay);
+      backdrop-filter: blur(16px);
+    }
+    .topbar-inner {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand {
+      color: var(--cp-text);
+      text-decoration: none;
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+    .nav { display: flex; gap: 20px; align-items: center; }
+    .nav a {
+      color: var(--cp-text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .nav a:hover { color: var(--cp-text); }
+    .theme-button {
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      border-radius: 0.625rem;
+      padding: 8px 12px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 650;
+    }
+    .hero {
+      padding: 88px 0 64px;
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 56px;
+      align-items: end;
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--cp-accent);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { margin-top: 0; line-height: 1.08; }
+    h1 {
+      margin-bottom: 24px;
+      max-width: 800px;
+      font-size: clamp(2.7rem, 7vw, 6.2rem);
+      letter-spacing: -0.065em;
+      font-weight: 800;
+    }
+    h2 {
+      margin-bottom: 16px;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      letter-spacing: -0.045em;
+    }
+    h3 { margin-bottom: 12px; font-size: 1.25rem; letter-spacing: -0.02em; }
+    .hero-copy {
+      max-width: 720px;
+      margin: 0;
+      color: var(--cp-text-soft);
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+    }
+    .hero-note {
+      border-left: 4px solid var(--cp-accent);
+      padding: 8px 0 8px 20px;
+      color: var(--cp-text-muted);
+      font-size: 0.95rem;
+    }
+    .hero-note strong { display: block; color: var(--cp-text); margin-bottom: 6px; }
+    .section { padding: 72px 0; border-top: 1px solid var(--cp-border); }
+    .section-intro { max-width: 760px; margin-bottom: 36px; color: var(--cp-text-soft); }
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .story-step, .service-card, .workshop-card {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+    }
+    .story-step { padding: 24px; }
+    .story-step span {
+      display: block;
+      margin-bottom: 28px;
+      color: var(--cp-accent);
+      font-family: Consolas, "Courier New", Courier, monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .story-step p { margin: 0; color: var(--cp-text-muted); }
+    .switchboard {
+      display: grid;
+      grid-template-columns: 0.72fr 1.28fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+    .case-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .case-tab {
+      width: 100%;
+      text-align: left;
+      padding: 20px;
+      border: 1px solid var(--cp-border);
+      border-left: 5px solid var(--cp-border-strong);
+      border-radius: 0.625rem;
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      cursor: pointer;
+      font: inherit;
+      transition: transform 160ms ease, background 160ms ease;
+    }
+    .case-tab:hover { transform: translateX(4px); background: var(--cp-surface-soft); }
+    .case-tab[data-case="qshe"] { border-left-color: var(--cp-success); }
+    .case-tab[data-case="supply"] { border-left-color: var(--cp-warning); }
+    .case-tab[data-case="document"] { border-left-color: var(--cp-accent); }
+    .case-tab[aria-selected="true"] { background: var(--cp-accent-soft); }
+    .case-tab strong { display: block; margin-bottom: 4px; font-size: 1rem; }
+    .case-tab small { color: var(--cp-text-muted); }
+    .case-panel {
+      min-height: 420px;
+      padding: 32px;
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      background: var(--cp-bg-elevated);
+    }
+    .case-kicker {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 5px 9px;
+      border: 1px solid var(--cp-border);
+      border-radius: 0.625rem;
+      color: var(--cp-text-muted);
+      font-size: 0.76rem;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .case-panel p { color: var(--cp-text-soft); }
+    .case-facts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .fact {
+      border-top: 1px solid var(--cp-border);
+      padding-top: 14px;
+    }
+    .fact dt { font-size: 0.8rem; font-weight: 750; color: var(--cp-text-muted); }
+    .fact dd { margin: 5px 0 0; font-size: 0.95rem; }
+    .architecture-frame {
+      overflow-x: auto;
+      padding: 24px;
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      background: var(--cp-surface);
+      box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+    }
+    .architecture-frame .mermaid { min-width: 920px; text-align: center; }
+    .legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 20px 0 0; }
+    .legend span { display: inline-flex; gap: 8px; align-items: center; color: var(--cp-text-muted); font-size: 0.84rem; }
+    .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--cp-border-strong); }
+    .dot.qshe { background: var(--cp-success); }
+    .dot.supply { background: var(--cp-warning); }
+    .dot.document { background: var(--cp-accent); }
+    .dot.shared { background: var(--cp-link); }
+    .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .service-card { padding: 22px; }
+    .service-card p { margin: 0; color: var(--cp-text-muted); font-size: 0.92rem; }
+    .service-card a { display: inline-block; margin-top: 14px; font-weight: 650; font-size: 0.88rem; }
+    .included {
+      margin-top: 28px;
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+    }
+    .included th, .included td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--cp-border); }
+    .included th { color: var(--cp-text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .included td { font-size: 0.92rem; }
+    .yes { color: var(--cp-success); font-weight: 750; }
+    .later { color: var(--cp-warning); font-weight: 750; }
+    .workshop-card { padding: 28px; }
+    .agenda { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 28px; }
+    .agenda-item {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid var(--cp-border);
+      border-radius: 0.625rem;
+      background: var(--cp-surface-soft);
+    }
+    .agenda-item time { font-family: Consolas, "Courier New", Courier, monospace; color: var(--cp-accent); font-size: 0.82rem; }
+    .agenda-item strong { display: block; font-size: 0.95rem; }
+    .agenda-item small { color: var(--cp-text-muted); }
+    .decision {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: center;
+      padding: 36px;
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      background: var(--cp-accent-soft);
+    }
+    .decision p { margin: 0; color: var(--cp-text-soft); }
+    .button-link {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 0.625rem;
+      background: var(--cp-accent);
+      color: var(--cp-accent-fg);
+      text-decoration: none;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+    .button-link:hover { background: var(--cp-accent-hover); color: var(--cp-accent-fg); }
+    footer { padding: 36px 0 56px; color: var(--cp-text-muted); font-size: 0.85rem; }
+    .disclaimer {
+      margin-top: 32px;
+      padding: 18px;
+      border: 1px solid var(--cp-border);
+      border-radius: 0.625rem;
+      background: var(--cp-surface-soft);
+      color: var(--cp-text-muted);
+    }
+    [hidden] { display: none !important; }
+
+    @media (max-width: 900px) {
+      .hero, .switchboard { grid-template-columns: 1fr; }
+      .hero { padding-top: 64px; gap: 32px; }
+      .story-grid, .service-grid { grid-template-columns: 1fr 1fr; }
+      .nav a { display: none; }
+    }
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 20px, 1180px); }
+      .story-grid, .service-grid, .agenda, .case-facts { grid-template-columns: 1fr; }
+      .decision { grid-template-columns: 1fr; }
+      .section { padding: 56px 0; }
+      .agenda-item { grid-template-columns: 74px 1fr; }
+      h1 { font-size: 3rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top">Agentic AI Workshop Options</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#options">Use cases</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#services">Azure services</a>
+        <a href="#workshop">Workshop plan</a>
+        <button class="theme-button" id="themeToggle" type="button" aria-label="Toggle color theme">Theme</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="shell hero">
+      <div>
+        <p class="eyebrow">Microsoft Foundry · Azure · MCP</p>
+        <h1>Three routes from operational signals to governed action.</h1>
+        <p class="hero-copy">A one-day workshop to build a Microsoft Foundry agent, connect it to Microsoft Learn MCP, and select one practical agent use case for a controlled pilot.</p>
+      </div>
+      <aside class="hero-note">
+        <strong>What this page is</strong>
+        A set of workshop options for distributed fuel, lubricant, safety, and document-intensive operations. It uses no private operational data and makes no autonomous business decisions.
+      </aside>
+    </section>
+
+    <section class="section" id="story">
+      <div class="shell">
+        <p class="eyebrow">The workshop story</p>
+        <h2>Start with the operating problem. End with a pilot decision.</h2>
+        <p class="section-intro">Distributed operations depend on timely evidence: inventory, deliveries, procedures, contracts, and quality records. The workshop teaches how an agent can gather permitted evidence, reason over it, and prepare a recommendation while keeping consequential decisions with authorized people.</p>
+        <div class="story-grid">
+          <article class="story-step"><span>01 · Understand</span><h3>Frame the work</h3><p>Identify the business event, required evidence, accountable users, and decisions that must remain human.</p></article>
+          <article class="story-step"><span>02 · Build</span><h3>Prove the pattern</h3><p>Create a Foundry agent and connect Microsoft Learn MCP to demonstrate tool selection, approval, citations, and traceability.</p></article>
+          <article class="story-step"><span>03 · Decide</span><h3>Choose a pilot</h3><p>Compare three use cases and leave with a bounded 60–90 day discovery and validation plan.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="options">
+      <div class="shell">
+        <p class="eyebrow">Three use-case options</p>
+        <h2>Choose the work that deserves an agent.</h2>
+        <p class="section-intro">Select an option to inspect its problem, agent role, human boundary, and suggested Azure services.</p>
+        <div class="switchboard">
+          <div class="case-tabs" role="tablist" aria-label="Agent use cases">
+            <button class="case-tab" role="tab" aria-selected="true" aria-controls="casePanel" data-case="qshe"><strong>QSHE knowledge</strong><small>Lower integration · evidence and escalation</small></button>
+            <button class="case-tab" role="tab" aria-selected="false" aria-controls="casePanel" data-case="supply"><strong>Supply operations</strong><small>Higher value · real-time exceptions</small></button>
+            <button class="case-tab" role="tab" aria-selected="false" aria-controls="casePanel" data-case="document"><strong>Document assurance</strong><small>Document-rich · controlled review</small></button>
+          </div>
+          <article class="case-panel" id="casePanel" role="tabpanel" tabindex="0" aria-live="polite">
+            <span class="case-kicker" id="caseKicker">Use case 1 · Knowledge</span>
+            <h3 id="caseTitle">QSHE and Operational Knowledge Agent</h3>
+            <p id="caseProblem">People need to find the current approved procedure, safety requirement, or evidence without relying on obsolete or unrelated documents.</p>
+            <p id="caseRole"><strong>Agent role:</strong> Return citation-backed guidance, identify document version and scope, and prepare controlled escalations.</p>
+            <dl class="case-facts">
+              <div class="fact"><dt>Human boundary</dt><dd id="caseBoundary">No permit approval, safe/unsafe declaration, or incident closure.</dd></div>
+              <div class="fact"><dt>Suggested services</dt><dd id="caseServices">Foundry Agent Service, Foundry IQ or Azure AI Search, Document Intelligence, Logic Apps, Entra ID, Application Insights.</dd></div>
+              <div class="fact"><dt>Pilot signal</dt><dd id="caseSignal">Strong first-pilot candidate when approved documents and owners are available.</dd></div>
+              <div class="fact"><dt>Measures</dt><dd id="caseMeasures">Search time, citation validity, current-document rate, escalation quality.</dd></div>
+            </dl>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="architecture">
+      <div class="shell">
+        <p class="eyebrow">Color-coded architecture</p>
+        <h2>One governed foundation. Three specialized paths.</h2>
+        <p class="section-intro">Microsoft Learn MCP supports the workshop research experience. Enterprise knowledge and operational data require separate permission-aware connections during a future pilot.</p>
+        <div class="architecture-frame">
+          <pre class="mermaid" id="architectureDiagram">
+flowchart TB
+  USER[Workshop participant or authorized operator] --> PORTAL[Microsoft Foundry portal or application]
+  PORTAL --> AGENT[Microsoft Foundry Agent Service]
+  AGENT --> MCP[Microsoft Learn MCP Server]
+  MCP --> LEARN[(Official Microsoft Learn content)]
+
+  AGENT --> QSEARCH[Foundry IQ or Azure AI Search]
+  QSEARCH --> QDOC[(Approved SOPs, safety data and procedures)]
+  QDOC --> QDI[Azure AI Document Intelligence]
+
+  AGENT --> FABRIC[Microsoft Fabric Real-Time Intelligence]
+  FABRIC --> EVENT[Eventstream and Eventhouse]
+  EVENT --> TELEMETRY[(Tank, consumption and delivery events)]
+  EVENT --> ACTIVATOR[Fabric Activator]
+
+  AGENT --> DSEARCH[Azure AI Search]
+  DSEARCH --> BLOB[(Azure Blob Storage)]
+  BLOB --> DDI[Azure AI Document Intelligence]
+
+  AGENT --> FLOW[Azure Logic Apps or Azure Functions]
+  FLOW --> APPROVAL{Authorized human approval}
+  APPROVAL --> SYSTEMS[ERP and operational APIs]
+
+  ID[Microsoft Entra ID and Azure RBAC] -. identity and least privilege .-> AGENT
+  ID -. authorization .-> SYSTEMS
+  AGENT -. traces .-> OBS[Foundry tracing and Application Insights]
+  FLOW -. workflow events .-> OBS
+
+  classDef shared fill:__SURFACE_SOFT__,stroke:__LINK__,color:__TEXT__,stroke-width:2px
+  classDef qshe fill:__SURFACE__,stroke:__SUCCESS__,color:__TEXT__,stroke-width:3px
+  classDef supply fill:__SURFACE__,stroke:__WARNING__,color:__TEXT__,stroke-width:3px
+  classDef document fill:__SURFACE__,stroke:__ACCENT__,color:__TEXT__,stroke-width:3px
+  classDef control fill:__SURFACE_SOFT__,stroke:__DANGER__,color:__TEXT__,stroke-width:2px
+
+  class USER,PORTAL,AGENT,MCP,LEARN shared
+  class QSEARCH,QDOC,QDI qshe
+  class FABRIC,EVENT,TELEMETRY,ACTIVATOR supply
+  class DSEARCH,BLOB,DDI document
+  class FLOW,APPROVAL,SYSTEMS,ID,OBS control
+          </pre>
+        </div>
+        <div class="legend" aria-label="Architecture legend">
+          <span><i class="dot shared"></i> Shared Foundry and workshop services</span>
+          <span><i class="dot qshe"></i> QSHE knowledge path</span>
+          <span><i class="dot supply"></i> Supply operations path</span>
+          <span><i class="dot document"></i> Document assurance path</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="shell">
+        <p class="eyebrow">Azure services included</p>
+        <h2>Services participants will use or design for.</h2>
+        <p class="section-intro">The workshop uses a safe subset directly. The remaining services appear in the target designs and require a separate enterprise pilot.</p>
+        <div class="service-grid">
+          <article class="service-card"><h3>Microsoft Foundry Agent Service</h3><p>Managed agent runtime, model access, tool orchestration, playground, and lifecycle controls.</p><a href="https://learn.microsoft.com/azure/foundry/agents/overview" target="_blank" rel="noreferrer">Official documentation</a></article>
+          <article class="service-card"><h3>Microsoft Learn MCP Server</h3><p>Public Microsoft documentation search, full article retrieval, and code samples for the workshop research agent.</p><a href="https://learn.microsoft.com/training/support/mcp" target="_blank" rel="noreferrer">Official documentation</a></article>
+          <article class="service-card"><h3>Foundry IQ and Azure AI Search</h3><p>Permission-aware enterprise knowledge, citations, hybrid retrieval, and complex query grounding.</p><a href="https://learn.microsoft.com/azure/search/agentic-retrieval-overview" target="_blank" rel="noreferrer">Official documentation</a></article>
+          <article class="service-card"><h3>Azure AI Document Intelligence</h3><p>Classifies and extracts fields, tables, and structure from operational and commercial documents.</p><a href="https://learn.microsoft.com/azure/ai-services/document-intelligence/overview" target="_blank" rel="noreferrer">Official documentation</a></article>
+          <article class="service-card"><h3>Microsoft Fabric Real-Time Intelligence</h3><p>Ingests, analyzes, and acts on event and time-series data for supply exceptions.</p><a href="https://learn.microsoft.com/fabric/real-time-intelligence/overview" target="_blank" rel="noreferrer">Official documentation</a></article>
+          <article class="service-card"><h3>Azure Logic Apps and Functions</h3><p>Runs deterministic validations, integrations, approvals, and controlled operational actions.</p><a href="https://learn.microsoft.com/azure/logic-apps/logic-apps-overview" target="_blank" rel="noreferrer">Official documentation</a></article>
+          <article class="service-card"><h3>Microsoft Entra ID and Azure RBAC</h3><p>Provides named identity, least-privilege authorization, and scoped access to data and tools.</p><a href="https://learn.microsoft.com/azure/role-based-access-control/overview" target="_blank" rel="noreferrer">Official documentation</a></article>
+          <article class="service-card"><h3>Azure Blob Storage</h3><p>Stores controlled source documents and extracted artifacts for the document-intensive option.</p><a href="https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview" target="_blank" rel="noreferrer">Official documentation</a></article>
+          <article class="service-card"><h3>Application Insights and Foundry tracing</h3><p>Captures model calls, tool invocations, latency, failures, and evaluation evidence.</p><a href="https://learn.microsoft.com/azure/foundry/observability/concepts/trace-agent-concept" target="_blank" rel="noreferrer">Official documentation</a></article>
+        </div>
+        <div class="architecture-frame" style="margin-top: 28px;">
+          <table class="included">
+            <thead><tr><th>Capability</th><th>One-day workshop</th><th>Future controlled pilot</th></tr></thead>
+            <tbody>
+              <tr><td>Foundry agent, model, instructions, playground</td><td class="yes">Included</td><td class="yes">Included</td></tr>
+              <tr><td>Microsoft Learn MCP with approval and citations</td><td class="yes">Included</td><td>Optional research tool</td></tr>
+              <tr><td>Enterprise documents and Azure AI Search</td><td>Synthetic design only</td><td class="later">Requires data approval</td></tr>
+              <tr><td>Document Intelligence extraction</td><td>Architecture exercise</td><td class="later">Requires sample documents</td></tr>
+              <tr><td>Fabric event and time-series integration</td><td>Architecture exercise</td><td class="later">Requires operational data</td></tr>
+              <tr><td>ERP or operational API connection</td><td>Not connected</td><td class="later">Requires integration approval</td></tr>
+              <tr><td>Human approval and production action</td><td>Pattern demonstration</td><td class="later">Requires control design</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="workshop">
+      <div class="shell">
+        <p class="eyebrow">One-day option</p>
+        <h2>Build, test, design, decide.</h2>
+        <div class="workshop-card">
+          <p class="section-intro">Participants leave with a working Foundry research agent, evidence from ten evaluation tests, a governed target architecture, and a pilot canvas for one selected use case.</p>
+          <div class="agenda">
+            <div class="agenda-item"><time>09:00</time><div><strong>Business context</strong><small>Operating signals and safe boundaries</small></div></div>
+            <div class="agenda-item"><time>09:20</time><div><strong>Governed agents</strong><small>Models, instructions, knowledge, tools, controls</small></div></div>
+            <div class="agenda-item"><time>10:15</time><div><strong>Use-case discovery</strong><small>Score and compare three options</small></div></div>
+            <div class="agenda-item"><time>11:00</time><div><strong>Foundry and MCP</strong><small>Architecture and official guidance</small></div></div>
+            <div class="agenda-item"><time>13:00</time><div><strong>Create a Foundry agent</strong><small>Model, instructions, and boundaries</small></div></div>
+            <div class="agenda-item"><time>13:30</time><div><strong>Connect Learn MCP</strong><small>Approval, search, fetch, and citations</small></div></div>
+            <div class="agenda-item"><time>15:00</time><div><strong>Test and trace</strong><small>Ten tests and failure analysis</small></div></div>
+            <div class="agenda-item"><time>15:40</time><div><strong>Design the pilot</strong><small>Choose a use case and complete the canvas</small></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="decision">
+      <div class="shell">
+        <div class="decision">
+          <div><p class="eyebrow">Workshop decision</p><h2>Which option earns a controlled pilot?</h2><p>Compare value, data readiness, implementation complexity, operational risk, and human accountability. Proceed only with a named business owner, technical owner, approved data scope, and measurable baseline.</p></div>
+          <a class="button-link" href="#options">Compare options</a>
+        </div>
+        <div class="disclaimer"><strong>Important:</strong> This page describes workshop and pilot options. Microsoft Learn MCP contains public Microsoft documentation—not enterprise procedures, contracts, telemetry, or operational records. Production use requires separate security, privacy, architecture, and operational review.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">Agentic AI Workshop Options · Microsoft Foundry and Azure · Public workshop concept</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    const cases = {
+      qshe: {
+        kicker: "Use case 1 · Knowledge",
+        title: "QSHE and Operational Knowledge Agent",
+        problem: "People need to find the current approved procedure, safety requirement, or evidence without relying on obsolete or unrelated documents.",
+        role: "Return citation-backed guidance, identify document version and scope, and prepare controlled escalations.",
+        boundary: "No permit approval, safe/unsafe declaration, or incident closure.",
+        services: "Foundry Agent Service, Foundry IQ or Azure AI Search, Document Intelligence, Logic Apps, Entra ID, Application Insights.",
+        signal: "Strong first-pilot candidate when approved documents and owners are available.",
+        measures: "Search time, citation validity, current-document rate, escalation quality."
+      },
+      supply: {
+        kicker: "Use case 2 · Operations",
+        title: "Fuel and Lubricant Supply Operations Agent",
+        problem: "Distributed sites, changing consumption, delivery dependencies, and safety stock create an exception-investigation workload.",
+        role: "Detect supply risk, assemble evidence, investigate causes, and prepare replenishment or communication options.",
+        boundary: "No purchase, dispatch, stock adjustment, or supply guarantee without authorized approval.",
+        services: "Foundry Agent Service, Fabric Real-Time Intelligence, Eventstream, Eventhouse, Activator, Logic Apps or Functions, operational APIs.",
+        signal: "Highest strategic value; requires stronger data readiness and integration discovery.",
+        measures: "Warning lead time, emergency deliveries, investigation time, recommendation acceptance."
+      },
+      document: {
+        kicker: "Use case 3 · Assurance",
+        title: "Commercial and Delivery Document Assurance Agent",
+        problem: "Quotations, contracts, orders, delivery records, certificates, and invoices must be compared before commercial or operational progression.",
+        role: "Extract fields, match related documents, flag missing or inconsistent evidence, and prepare a traceable review package.",
+        boundary: "No supplier approval, delivery acceptance, contract change, invoice authorization, or payment release.",
+        services: "Foundry Agent Service, Document Intelligence, Azure AI Search, Blob Storage, Logic Apps or Functions, Entra ID, Application Insights.",
+        signal: "Practical first-pilot candidate for a bounded set of sanitized document types.",
+        measures: "Review time, extraction accuracy, discrepancy detection, false positives, manual rework."
+      }
+    };
+
+    function selectCase(name) {
+      const selected = cases[name];
+      document.querySelectorAll(".case-tab").forEach((tab) => {
+        tab.setAttribute("aria-selected", String(tab.dataset.case === name));
+      });
+      document.getElementById("caseKicker").textContent = selected.kicker;
+      document.getElementById("caseTitle").textContent = selected.title;
+      document.getElementById("caseProblem").textContent = selected.problem;
+      document.getElementById("caseRole").innerHTML = `<strong>Agent role:</strong> ${selected.role}`;
+      document.getElementById("caseBoundary").textContent = selected.boundary;
+      document.getElementById("caseServices").textContent = selected.services;
+      document.getElementById("caseSignal").textContent = selected.signal;
+      document.getElementById("caseMeasures").textContent = selected.measures;
+    }
+
+    document.querySelectorAll(".case-tab").forEach((tab) => {
+      tab.addEventListener("click", () => selectCase(tab.dataset.case));
+    });
+
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      const url = new URL(window.location.href);
+      url.searchParams.set("scoutTheme", next);
+      window.location.href = url.toString();
+    });
+
+    const themeStyles = getComputedStyle(document.documentElement);
+    const architectureDiagram = document.getElementById("architectureDiagram");
+    const diagramColors = {
+      "__SURFACE_SOFT__": themeStyles.getPropertyValue("--cp-surface-soft").trim(),
+      "__SURFACE__": themeStyles.getPropertyValue("--cp-surface").trim(),
+      "__TEXT__": themeStyles.getPropertyValue("--cp-text").trim(),
+      "__LINK__": themeStyles.getPropertyValue("--cp-link").trim(),
+      "__SUCCESS__": themeStyles.getPropertyValue("--cp-success").trim(),
+      "__WARNING__": themeStyles.getPropertyValue("--cp-warning").trim(),
+      "__ACCENT__": themeStyles.getPropertyValue("--cp-accent").trim(),
+      "__DANGER__": themeStyles.getPropertyValue("--cp-danger").trim()
+    };
+    architectureDiagram.textContent = Object.entries(diagramColors).reduce(
+      (source, [token, value]) => source.replaceAll(token, value),
+      architectureDiagram.textContent
+    );
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "base",
+      securityLevel: "loose",
+      flowchart: { htmlLabels: true, curve: "basis", nodeSpacing: 28, rankSpacing: 42 },
+      themeVariables: {
+        fontFamily: '"Segoe UI", Aptos, Calibri, sans-serif',
+        primaryColor: themeStyles.getPropertyValue("--cp-surface").trim(),
+        primaryTextColor: themeStyles.getPropertyValue("--cp-text").trim(),
+        primaryBorderColor: themeStyles.getPropertyValue("--cp-border-strong").trim(),
+        lineColor: themeStyles.getPropertyValue("--cp-border-strong").trim(),
+        clusterBkg: themeStyles.getPropertyValue("--cp-bg-elevated").trim(),
+        clusterBorder: themeStyles.getPropertyValue("--cp-border").trim()
+      }
+    });
+    mermaid.run({ querySelector: ".mermaid" });
+  </script>
+</body>
+</html>
