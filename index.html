@@ -214,6 +214,7 @@
       transition: transform 160ms ease, background 160ms ease;
     }
     .case-tab:hover { transform: translateX(4px); background: var(--cp-surface-soft); }
+    .case-tab:disabled { cursor: wait; opacity: 0.72; transform: none; }
     .case-tab[data-case="qshe"] { border-left-color: var(--cp-success); }
     .case-tab[data-case="supply"] { border-left-color: var(--cp-warning); }
     .case-tab[data-case="document"] { border-left-color: var(--cp-accent); }
@@ -262,6 +263,8 @@
     }
     .architecture-frame .mermaid { min-width: 920px; text-align: center; }
     .architecture-grid { display: grid; gap: 24px; }
+    .architecture-grid:not(.ready) { min-height: 420px; }
+    .architecture-grid:not(.ready) .architecture-card { visibility: hidden; }
     .architecture-card {
       padding: 24px;
       border: 1px solid var(--cp-border);
@@ -418,9 +421,9 @@
         <p class="section-intro">Select an option to inspect its problem, agent role, human boundary, and suggested Azure services.</p>
         <div class="switchboard">
           <div class="case-tabs" role="tablist" aria-label="Agent use cases">
-            <button class="case-tab" role="tab" aria-selected="true" aria-controls="casePanel" data-case="qshe"><strong>QSHE knowledge</strong><small>Lower integration · evidence and escalation</small></button>
-            <button class="case-tab" role="tab" aria-selected="false" aria-controls="casePanel" data-case="supply"><strong>Supply operations</strong><small>Higher value · real-time exceptions</small></button>
-            <button class="case-tab" role="tab" aria-selected="false" aria-controls="casePanel" data-case="document"><strong>Document assurance</strong><small>Document-rich · controlled review</small></button>
+            <button class="case-tab" role="tab" aria-selected="true" aria-controls="casePanel" data-case="qshe" disabled><strong>QSHE knowledge</strong><small>Lower integration · evidence and escalation</small></button>
+            <button class="case-tab" role="tab" aria-selected="false" aria-controls="casePanel" data-case="supply" disabled><strong>Supply operations</strong><small>Higher value · real-time exceptions</small></button>
+            <button class="case-tab" role="tab" aria-selected="false" aria-controls="casePanel" data-case="document" disabled><strong>Document assurance</strong><small>Document-rich · controlled review</small></button>
           </div>
           <article class="case-panel" id="casePanel" role="tabpanel" tabindex="0" aria-live="polite">
             <span class="case-kicker" id="caseKicker">Use case 1 · Knowledge</span>
@@ -443,7 +446,7 @@
         <p class="eyebrow">Architecture by use case</p>
         <h2>Architecture for the selected use case.</h2>
         <p class="section-intro">Select a use case above to change this architecture. Microsoft Learn MCP supports only the workshop research experience; enterprise knowledge and operational data require approved, permission-aware connections.</p>
-        <div class="architecture-grid">
+        <div class="architecture-grid" id="architectureGrid">
           <article class="architecture-card qshe" data-architecture="qshe">
             <header><p class="eyebrow">Use case 1 · QSHE knowledge</p><h3>Ground approved operational guidance and route controlled escalations.</h3><p>Documents are extracted and indexed, the Foundry agent returns cited guidance, and consequential updates pause for an authorized reviewer.</p></header>
             <div class="architecture-frame">
@@ -471,7 +474,7 @@ flowchart LR
             </div>
           </article>
 
-          <article class="architecture-card supply" data-architecture="supply" hidden>
+          <article class="architecture-card supply" data-architecture="supply">
             <header><p class="eyebrow">Use case 2 · Supply operations</p><h3>Detect supply risk, investigate exceptions, and prepare approved actions.</h3><p>Event and time-series data flows through Fabric, the Foundry agent assembles evidence and options, and ERP or dispatch changes require human approval.</p></header>
             <div class="architecture-frame">
               <pre class="mermaid">
@@ -499,7 +502,7 @@ flowchart LR
             </div>
           </article>
 
-          <article class="architecture-card document" data-architecture="document" hidden>
+          <article class="architecture-card document" data-architecture="document">
             <header><p class="eyebrow">Use case 3 · Document assurance</p><h3>Extract, reconcile, and route commercial and delivery evidence.</h3><p>Documents are classified and extracted, indexed for comparison, reviewed by the agent, and routed to an authorized employee before any commercial progression.</p></header>
             <div class="architecture-frame">
               <pre class="mermaid">
@@ -699,7 +702,14 @@ flowchart LR
         clusterBorder: themeStyles.getPropertyValue("--cp-border").trim()
       }
     });
-    mermaid.run({ querySelector: ".mermaid" });
+    mermaid.run({ querySelector: ".mermaid" }).then(() => {
+      document.getElementById("architectureGrid").classList.add("ready");
+      document.querySelectorAll(".case-tab").forEach((tab) => { tab.disabled = false; });
+      selectCase("qshe");
+    }).catch(() => {
+      document.getElementById("architectureGrid").classList.add("ready");
+      document.querySelectorAll(".case-tab").forEach((tab) => { tab.disabled = false; });
+    });
   </script>
 </body>
 </html>
